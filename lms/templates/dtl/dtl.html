@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    DTL Syntax Demo
+
+    <h1>{{ name|upper }}</h1>
+
+    <div>I turned {{ age }} today!</div>
+
+    {{ courses }}
+
+
+
+
+    {% for course in courses %}
+    <p>{{ course }}</p>
+    {% endfor %}
+
+    {% if is_logged_in %}
+    <div>You have {{ no_of_messages }} messages</div>
+    {% endif %}
+
+    {{ students_grades }}
+
+    {% for student, grade in students_grades.items %}
+    <h3>{{ student }} -> {{ grade }}</h3>
+    {% endfor %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Title 1</td>
+                <td>Author 1</td>
+            </tr>
+            <tr>
+                <td>Title 2</td>
+                <td>Author 2</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for book in library %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                </tr>
+                
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+</body>
+</html>
