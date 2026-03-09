@@ -3,10 +3,10 @@ from django.shortcuts import render
 # Create your views here.
 def dtl_syntax_demo(request):
     context = {
-        'name': "WiNniE",
+        'name': "Someone",
         'age': 24,
         'courses': ["Python", "Django", "Git", "SQL", "FastAPI", "HTML/CSS"],
-        'is_logged_in': False,
+        'is_logged_in': True,
         'no_of_messages': 3,
         'students_grades': {'Pelumi': 'A', "Olumide": "B", "Joshua": "C", "Francis": "D", "Adil": "E"},
         'library': [
