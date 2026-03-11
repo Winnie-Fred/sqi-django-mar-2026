@@ -1,0 +1,187 @@
+/* home.css
+   Page-specific styles for home.html (hero + CTA)
+   Uses hero styles from main.css but tightens layout for the homepage.
+*/
+
+/* quick hero card for homepage (if you place a hero div) */
+.home-hero{
+  margin-top: 1rem;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: linear-gradient(180deg, rgba(217,74,42,0.88), rgba(217,74,42,0.6));
+  color: #fff;
+}
+
+/* hero inner (can be applied to <div class="home-hero"> as suggested) */
+.home-hero .inner{
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 2rem;
+  padding: 3rem;
+  align-items: center;
+  background-image: linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+}
+
+/* large welcome headline */
+.container > h1{
+  color: var(--accent-contrast);
+  font-size: 2.25rem;
+  margin-bottom: .6rem;
+  text-shadow: 0 6px 20px rgba(16,16,16,0.32);
+}
+
+/* the intro paragraph card */
+.container > div {
+  margin-top: 1rem;
+  color: rgba(255,255,255,0.95);
+  max-width: 56ch;
+  font-size: 1.02rem;
+}
+
+/* primary CTA link */
+.container > a{
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: .85rem 1.1rem;
+  border-radius: 12px;
+  background: var(--accent-contrast);
+  color: var(--accent-dark);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(217,74,42,0.14);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.container > a:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(16,16,16,0.12);
+}
+
+#newsletterPopUp {
+    display: none;
+}
+
+#newsletterPopUp{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 320px;
+
+    background: linear-gradient(180deg, var(--panel), #ffffff);
+    border-radius: 16px;
+
+    padding: 22px 20px;
+
+    box-shadow: 0 18px 40px rgba(16,16,16,0.18);
+    border: 1px solid rgba(16,16,16,0.05);
+
+    z-index: 1000;
+
+    /* display: flex; */
+    flex-direction: column;
+    gap: 12px;
+
+    animation: popupSlideIn 0.4s ease;
+}
+
+/* Title */
+
+#newsletterPopUp h3{
+    margin: 0;
+    font-size: 1.2rem;
+    font-family: "Playfair Display", Georgia, serif;
+    color: var(--text);
+}
+
+/* Input container */
+
+#newsletterPopUp div{
+    display: flex;
+    flex-direction: column;
+}
+
+/* Email input */
+
+#newsletterPopUp input{
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(16,16,16,0.08);
+    font-size: 0.95rem;
+}
+
+/* Buttons */
+
+#newsletterPopUp button{
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+
+    font-weight: 700;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+/* Primary button */
+
+#newsletterPopUp button:first-of-type{
+    background: var(--accent);
+    color: white;
+}
+
+#newsletterPopUp button:first-of-type:hover{
+    background: var(--accent-dark);
+    transform: translateY(-2px);
+}
+
+/* Close button */
+
+#closeBtn{
+    background: transparent;
+    color: var(--muted-text);
+}
+
+#closeBtn:hover{
+    background: rgba(0,0,0,0.05);
+}
+
+/* Popup animation */
+
+@keyframes popupSlideIn{
+    from{
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px){
+    #newsletterPopUp{
+        right: 15px;
+        left: 15px;
+        width: auto;
+        bottom: 20px;
+    }
+}
+
+/* mobile adjustments */
+@media (max-width: 760px){
+  .home-hero .inner{
+    grid-template-columns: 1fr;
+    padding: 1.25rem;
+  }
+  .container > h1{
+    color: var(--text);
+    text-shadow: none;
+  }
+  .container > a{
+    color: var(--accent-contrast);
+    background: var(--accent);
+    display: block;
+  }
+}

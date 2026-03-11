@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_css %}
+    {% endblock extra_css %}
+
+    {% block title %}
+    <title>Django Bakery</title>
+    {% endblock title %}
+</head>
+
+<body>
+
+<header>
+    <div class="container header-row">
+
+        <!-- Logo / Brand -->
+        <a href="{% url 'core:home' %}" class="site-brand">
+            <div class="logo">DB</div>
+            <div>Django Bakery</div>
+        </a>
+
+        <!-- Navigation -->
+        <nav>
+            <ul>
+                <li><a href="{% url 'core:home' %}">Home</a></li>
+                <li><a href="{% url 'core:about' %}">About</a></li>
+                <li><a href="{% url 'core:menu' %}">Menu</a></li>
+                <li><a href="{% url 'core:contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+
+        <!-- Header actions -->
+        <div class="header-actions">
+            <a href="#" class="btn secondary">Login</a>
+            <a href="#" class="btn">Order</a>
+        </div>
+
+    </div>
+</header>
+
+
+<main class="container section">
+    {% block content %}
+    {% endblock content %}
+</main>
+
+
+<footer>
+    <div class="container footer-grid">
+
+        <div>
+            <h3>Django Bakery</h3>
+            <p>Fresh breads, pastries, and cakes baked daily with quality ingredients.</p>
+        </div>
+
+        <div>
+            <h3>Pages</h3>
+            <p><a href="{% url 'core:home' %}">Home</a></p>
+            <p><a href="{% url 'core:about' %}">About</a></p>
+            <p><a href="{% url 'core:menu' %}">Menu</a></p>
+            <p><a href="{% url 'core:contact' %}">Contact</a></p>
+        </div>
+
+        <div>
+            <h3>Contact</h3>
+            <p>12 Baker Street</p>
+            <p>Sweet City</p>
+            <p>contact@djangobakery.com</p>
+        </div>
+
+    </div>
+</footer>
+    {% block extra_scripts %}
+    {% endblock extra_scripts %}
+</body>
+</html>

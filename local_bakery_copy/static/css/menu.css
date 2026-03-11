@@ -1,0 +1,282 @@
+/* ========================================
+   MENU PAGE — Styles
+   ======================================== */
+
+/* ---------- Menu Hero ---------- */
+.menu-hero {
+    background: linear-gradient(135deg, #C41E24 0%, #9B1B20 100%);
+    color: var(--white);
+    text-align: center;
+    padding: 60px 20px 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-hero h1 {
+    font-size: 2.8rem;
+    color: var(--white);
+    margin-bottom: 12px;
+}
+
+.menu-hero p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.menu-hero::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    top: -80px;
+    left: -80px;
+}
+
+.menu-hero::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    bottom: -60px;
+    right: -40px;
+}
+
+/* ---------- Menu Filters ---------- */
+.menu-filters {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 68px;
+    z-index: 100;
+}
+
+.filters-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--gray);
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-btn:hover {
+    border-color: var(--red-primary);
+    color: var(--red-primary);
+}
+
+.filter-btn.active {
+    background: var(--red-primary);
+    color: var(--white);
+    border-color: var(--red-primary);
+}
+
+/* ---------- Menu Grid ---------- */
+.menu-content {
+    padding: 50px 0 80px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.menu-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
+}
+
+.menu-card-image {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    background: var(--cream);
+}
+
+.menu-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.menu-card:hover .menu-card-image img {
+    transform: scale(1.08);
+}
+
+.menu-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--red-primary);
+    color: var(--white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+}
+
+.menu-card-wishlist {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--gray);
+    font-size: 0.85rem;
+}
+
+.menu-card-wishlist:hover {
+    background: var(--red-primary);
+    color: var(--white);
+}
+
+.menu-card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-card-category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--red-primary);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.menu-card-body h3 {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+.menu-card-body .stars {
+    margin-bottom: 8px;
+}
+
+.menu-card-desc {
+    font-size: 0.88rem;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 18px;
+    flex: 1;
+}
+
+.menu-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.menu-card-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.menu-card-price .old-price {
+    font-size: 0.85rem;
+    color: var(--light-gray);
+    text-decoration: line-through;
+    font-weight: 400;
+    margin-left: 6px;
+}
+
+.menu-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    background: var(--cream);
+    color: var(--dark);
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: var(--font-body);
+}
+
+.menu-add-btn:hover {
+    background: var(--red-primary);
+    color: var(--white);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 992px) {
+    .menu-hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .menu-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .menu-hero {
+        padding: 40px 20px 35px;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-filters {
+        top: 60px;
+    }
+}

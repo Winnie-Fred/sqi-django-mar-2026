@@ -1,0 +1,24 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+
+{% block title %}
+<title>About Django Bakery</title>
+{% endblock title %}
+
+{% block content %}
+<h1>About Django Bakery</h1>
+
+<div>
+Django Bakery is a small neighborhood bakery focused on fresh, simple, and delicious baked goods. Every day we prepare breads, cakes, cookies, and pastries using quality ingredients and traditional baking methods.
+
+Our goal is to create a welcoming place where people can enjoy freshly baked treats, discover new flavors, and share good moments with friends and family.
+
+Whether you are stopping by for a quick snack, ordering a cake for a celebration, or just exploring our menu, Django Bakery is happy to serve you.
+</div>
+
+{% endblock content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock extra_css %}

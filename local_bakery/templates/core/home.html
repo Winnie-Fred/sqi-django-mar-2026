@@ -1,0 +1,35 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+
+{% block title %}
+<title>Django Bakery Home</title>
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_css %}
+
+
+{% block content %}
+<h1>Welcome to Django Bakery!</h1>
+<div>This is the Django Bakery homepage. Here you can explore our freshly baked breads, cakes, and pastries made daily with quality ingredients. Check out our menu, discover new treats, and enjoy the best bakery experience.</div>
+<a href="{% url 'core:menu' %}">Explore our Menu</a>
+
+<div id="newsletterPopUp">
+    <h3>Sign Up to Our Newsletter</h3>
+
+    <div>
+        <input type="email" placeholder="Enter your email">
+    </div>
+
+    <button>Sign Up</button>
+    <button id="closeBtn">Close</button>
+</div>
+
+{% endblock content %}
+
+
+{% block extra_scripts %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock extra_scripts %}

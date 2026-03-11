@@ -1,0 +1,132 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block title %}
+<title>About — Django Bakery</title>
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<!-- About Hero -->
+<section class="about-hero">
+    <h1>About Django Bakery</h1>
+    <p>A neighborhood bakery focused on fresh, simple, and delicious baked goods made with love</p>
+</section>
+
+<!-- Our Story -->
+<section class="about-story section">
+    <div class="container">
+        <div class="story-image">🍞</div>
+        <div class="story-content">
+            <h2>Our Story — Baked with <span>Love</span> Since Day One</h2>
+            <p>
+                Django Bakery started as a small neighborhood bakery with one simple mission: to create fresh, 
+                delicious baked goods using quality ingredients and traditional baking methods.
+            </p>
+            <p>
+                Every day, our team of passionate bakers prepares breads, cakes, cookies, and pastries 
+                from scratch. We believe that the best treats are made with care, patience, and a genuine 
+                love for the craft of baking.
+            </p>
+            <p>
+                Our goal is to create a welcoming place where people can enjoy freshly baked treats, 
+                discover new flavors, and share good moments with friends and family.
+            </p>
+            <div class="story-signature">
+                <div class="name">The Django Bakery Team</div>
+                <div class="role">Baking happiness since 2020</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="about-values section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-heart"></i></div>
+            <h2>What We Stand For</h2>
+            <p>The values that guide every loaf, every cake, and every pastry we create</p>
+        </div>
+
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                <h3>Fresh Ingredients</h3>
+                <p>We source the finest local ingredients daily — from organic flour to farm-fresh eggs and seasonal fruits.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-hand-sparkles"></i></div>
+                <h3>Handcrafted Daily</h3>
+                <p>Every item is made from scratch each morning by our skilled bakers using time-honored techniques.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-users"></i></div>
+                <h3>Community First</h3>
+                <p>We're more than a bakery — we're a gathering place where neighbors connect over great food.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="about-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>5+</h3>
+                <p>Years of Baking</p>
+            </div>
+            <div class="stat-item">
+                <h3>200+</h3>
+                <p>Recipes Perfected</p>
+            </div>
+            <div class="stat-item">
+                <h3>50K+</h3>
+                <p>Happy Customers</p>
+            </div>
+            <div class="stat-item">
+                <h3>15</h3>
+                <p>Expert Bakers</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Team -->
+<section class="about-team section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-users"></i></div>
+            <h2>Meet Our Bakers</h2>
+            <p>The talented people behind every delicious bite</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">👩‍🍳</div>
+                <h3>Sarah Johnson</h3>
+                <div class="team-role">Head Pastry Chef</div>
+                <p>With 12 years of experience, Sarah brings creativity and precision to every cake and pastry.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍🍳</div>
+                <h3>David Okonkwo</h3>
+                <div class="team-role">Master Baker</div>
+                <p>David's artisan breads are legendary — he trained in Paris and brings European flair to every loaf.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👩‍🍳</div>
+                <h3>Amara Chen</h3>
+                <div class="team-role">Creative Director</div>
+                <p>Amara designs our seasonal menus and brings innovative flavor combinations to the bakery.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

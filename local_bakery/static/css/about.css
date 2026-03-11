@@ -1,0 +1,41 @@
+/* about.css
+   Page-specific styles for about.html
+   Relies on variables from main.css (colors, radii, spacing)
+*/
+
+.container > h1 {
+  margin-top: 0.25rem;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
+}
+
+/* make the about text sit in a warm card */
+.container > div {
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), var(--panel));
+  border-radius: 12px;
+  padding: 1.5rem 1.25rem;
+  margin-top: 1rem;
+  box-shadow: 0 8px 20px rgba(16,16,16,0.04);
+  border: 1px solid rgba(16,16,16,0.03);
+  color: var(--muted-text);
+  max-width: 900px;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* subtle large drop-quote feel for the first sentence if present */
+.container > div::first-letter{
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.6rem;
+  color: var(--accent-dark);
+  float: left;
+  margin-right: .6rem;
+  line-height: .9;
+}
+
+/* responsive */
+@media (max-width: 760px){
+  .container > div {
+    padding: 1rem;
+  }
+}

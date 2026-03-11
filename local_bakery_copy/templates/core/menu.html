@@ -1,0 +1,166 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Menu — Django Bakery</title>
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<!-- Menu Hero -->
+<section class="menu-hero">
+    <h1>Our Fresh Baked Menu</h1>
+    <p>Discover our wide selection of breads, cakes, pastries, and treats — all baked fresh daily</p>
+</section>
+
+<!-- Filters -->
+<div class="menu-filters">
+    <div class="container">
+        <div class="filters-inner">
+            <button class="filter-btn active"><i class="fas fa-th"></i> All Items</button>
+            <button class="filter-btn"><i class="fas fa-bread-slice"></i> Breads</button>
+            <button class="filter-btn"><i class="fas fa-cake-candles"></i> Cakes</button>
+            <button class="filter-btn"><i class="fas fa-cookie"></i> Pastries</button>
+            <button class="filter-btn"><i class="fas fa-cookie-bite"></i> Cookies</button>
+            <button class="filter-btn"><i class="fas fa-ice-cream"></i> Desserts</button>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Grid -->
+<section class="menu-content">
+    <div class="container">
+        <div class="menu-grid">
+
+            <!-- Item 1 -->
+            <div class="menu-card">
+                <div class="menu-card-image">
+                    <span class="menu-card-badge">Best Seller</span>
+                    <button class="menu-card-wishlist"><i class="far fa-heart"></i></button>
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=400&fit=crop&q=80" alt="Chocolate Cake">
+                </div>
+                <div class="menu-card-body">
+                    <span class="menu-card-category">Cakes</span>
+                    <h3>Chocolate Cake</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="menu-card-desc">Rich and moist chocolate cake made with premium cocoa and layered with velvety ganache.</p>
+                    <div class="menu-card-footer">
+                        <span class="menu-card-price">$25.00</span>
+                        <button class="menu-add-btn"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="menu-card">
+                <div class="menu-card-image">
+                    <span class="menu-card-badge">New</span>
+                    <button class="menu-card-wishlist"><i class="far fa-heart"></i></button>
+                    <img src="https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=600&h=400&fit=crop&q=80" alt="Butter Croissant">
+                </div>
+                <div class="menu-card-body">
+                    <span class="menu-card-category">Pastries</span>
+                    <h3>Butter Croissant</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="menu-card-desc">Flaky French-style croissant baked fresh every morning with pure imported butter.</p>
+                    <div class="menu-card-footer">
+                        <span class="menu-card-price">$8.50</span>
+                        <button class="menu-add-btn"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="menu-card">
+                <div class="menu-card-image">
+                    <button class="menu-card-wishlist"><i class="far fa-heart"></i></button>
+                    <img src="https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=600&h=400&fit=crop&q=80" alt="Blueberry Muffin">
+                </div>
+                <div class="menu-card-body">
+                    <span class="menu-card-category">Pastries</span>
+                    <h3>Blueberry Muffin</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                    <p class="menu-card-desc">Soft muffin bursting with fresh blueberries and a golden crumble topping.</p>
+                    <div class="menu-card-footer">
+                        <span class="menu-card-price">$6.00</span>
+                        <button class="menu-add-btn"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="menu-card">
+                <div class="menu-card-image">
+                    <span class="menu-card-badge">30% Off</span>
+                    <button class="menu-card-wishlist"><i class="far fa-heart"></i></button>
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&h=400&fit=crop&q=80" alt="Strawberry Cake">
+                </div>
+                <div class="menu-card-body">
+                    <span class="menu-card-category">Cakes</span>
+                    <h3>Strawberry Cake</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="menu-card-desc">Light sponge cake layered with fresh strawberries and whipped cream.</p>
+                    <div class="menu-card-footer">
+                        <span class="menu-card-price">$19.60 <span class="old-price">$28.00</span></span>
+                        <button class="menu-add-btn"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="menu-card">
+                <div class="menu-card-image">
+                    <button class="menu-card-wishlist"><i class="far fa-heart"></i></button>
+                    <img src="https://images.unsplash.com/photo-1509365390695-33aee754301f?w=600&h=400&fit=crop&q=80" alt="Cinnamon Roll">
+                </div>
+                <div class="menu-card-body">
+                    <span class="menu-card-category">Pastries</span>
+                    <h3>Cinnamon Roll</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="menu-card-desc">Warm cinnamon roll topped with sweet cream cheese icing, freshly baked.</p>
+                    <div class="menu-card-footer">
+                        <span class="menu-card-price">$7.00</span>
+                        <button class="menu-add-btn"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="menu-card">
+                <div class="menu-card-image">
+                    <button class="menu-card-wishlist"><i class="far fa-heart"></i></button>
+                    <img src="https://images.unsplash.com/photo-1574085733277-851d9d856a3a?w=600&h=400&fit=crop&q=80" alt="Banana Bread">
+                </div>
+                <div class="menu-card-body">
+                    <span class="menu-card-category">Breads</span>
+                    <h3>Banana Bread</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                    <p class="menu-card-desc">Homemade banana bread with a soft texture, rich flavor, and walnut pieces.</p>
+                    <div class="menu-card-footer">
+                        <span class="menu-card-price">$12.00</span>
+                        <button class="menu-add-btn"><i class="fas fa-shopping-bag"></i> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

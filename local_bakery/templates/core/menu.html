@@ -1,0 +1,107 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Django Bakery Menu</title>
+{% endblock title %}
+
+{% block content %}
+<h1>Django Bakery Menu</h1>
+
+<section class="menu-section">
+  <h2>Our Fresh Baked Items</h2>
+
+  <div class="menu-items">
+
+    <div class="item">
+      <figure>
+        <img src="{% static 'images/chocolate_cake.jpg' %}" alt="Chocolate Cake" loading="lazy">
+      </figure>
+      <div class="meta">
+        <h3>Chocolate Cake</h3>
+        <p>Rich and moist chocolate cake made with premium cocoa.</p>
+        <div style="margin-top:.6rem; display:flex; gap:.6rem; align-items:center;">
+          <span class="badge">₦2,500</span>
+          <a class="btn small" href="#">Add</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <figure>
+        <img src="{% static 'images/croissant.jpg' %}" alt="Butter Croissant" loading="lazy">
+      </figure>
+      <div class="meta">
+        <h3>Butter Croissant</h3>
+        <p>Flaky French-style croissant baked fresh every morning.</p>
+        <div style="margin-top:.6rem; display:flex; gap:.6rem; align-items:center;">
+          <span class="badge">₦900</span>
+          <a class="btn small" href="#">Add</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <figure>
+        <img src="{% static 'images/blueberry_muffin.jpg' %}" alt="Blueberry Muffin" loading="lazy">
+      </figure>
+      <div class="meta">
+        <h3>Blueberry Muffin</h3>
+        <p>Soft muffin filled with fresh blueberries.</p>
+        <div style="margin-top:.6rem; display:flex; gap:.6rem; align-items:center;">
+          <span class="badge">₦700</span>
+          <a class="btn small" href="#">Add</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <figure>
+        <img src="{% static 'images/strawberry_cake.jpg' %}" alt="Strawberry Cake" loading="lazy">
+      </figure>
+      <div class="meta">
+        <h3>Strawberry Cake</h3>
+        <p>Light sponge cake layered with fresh strawberries and cream.</p>
+        <div style="margin-top:.6rem; display:flex; gap:.6rem; align-items:center;">
+          <span class="badge">₦3,200</span>
+          <a class="btn small" href="#">Add</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <figure>
+        <img src="{% static 'images/cinnamon_roll.jpg' %}" alt="Cinnamon Roll" loading="lazy">
+      </figure>
+      <div class="meta">
+        <h3>Cinnamon Roll</h3>
+        <p>Warm cinnamon roll topped with sweet icing.</p>
+        <div style="margin-top:.6rem; display:flex; gap:.6rem; align-items:center;">
+          <span class="badge">₦850</span>
+          <a class="btn small" href="#">Add</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <figure>
+        <img src="{% static 'images/banana_bread.jpg' %}" alt="Banana Bread" loading="lazy">
+      </figure>
+      <div class="meta">
+        <h3>Banana Bread</h3>
+        <p>Homemade banana bread with a soft texture and rich flavor.</p>
+        <div style="margin-top:.6rem; display:flex; gap:.6rem; align-items:center;">
+          <span class="badge">₦1,100</span>
+          <a class="btn small" href="#">Add</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock extra_css %}
