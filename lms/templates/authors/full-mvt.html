@@ -13,6 +13,11 @@ Full MVT
     <div>
         <ul>        
             {% for author in all_authors %}
+                {% if author.picture %}
+                <img width="100" height="100" src="{{ author.picture.url }}" alt="{{ author }}'s Image">
+                {% else %}
+                <p>No image for {{ author }}</p>
+                {% endif %}
                 <li>{{ author }} born on {{ author.birth_date }} ({% if author.is_nigerian %}Nigerian{% else %}Non-nigerian{% endif %})</li>
             {% endfor %}
         </ul>
@@ -62,6 +67,7 @@ Full MVT
             <h3>Books by {{ author }}</h3>
             <ul>
                 {% for book in author.books.all %}
+                    <img width="100" height="100" src="{{ book.cover_image.url }}" alt="Cover Image of {{ book.title }}">
                     <li>{{ book.title }} published on {{ book.published_on }}</li>
                 {% endfor %}
             </ul>
