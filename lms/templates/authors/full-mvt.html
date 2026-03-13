@@ -1,0 +1,103 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+Full MVT
+{% endblock title %}
+
+
+{% block body %}
+<div>
+    <h1>Full Model-View-Template Demo</h1>
+
+    <h2>All Authors</h2>
+    <div>
+        <ul>        
+            {% for author in all_authors %}
+                <li>{{ author }} born on {{ author.birth_date }} ({% if author.is_nigerian %}Nigerian{% else %}Non-nigerian{% endif %})</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h2>Non-Nigerian Authors</h2>
+    <div>
+        <ul>        
+            {% for author in non_nigerians %}
+                <li>{{ author }} born on {{ author.birth_date }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h2>Nigerian Authors</h2>
+    <div>
+        <ul>        
+            {% for author in nigerians %}
+                <li>{{ author }} born on {{ author.birth_date }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    
+    <h2>Authors born before 1975</h2>
+
+    <div>
+        <ul>        
+            {% for author in born_before_1975 %}
+                <li>{{ author }} born on {{ author.birth_date }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h2>Non-Existent Author</h2>
+    {% if non_existent_author %}
+    <div>{{ non_existent_author.first_name}} {{ non_existent_author.last_name }} born on {{ non_existent_author.birth_date }}</div>
+    {% else %}
+    <p>Author does not exist</p>
+    {% endif %}
+    <div></div>
+
+
+    <h2>Authors and their Books</h2>
+    <div>
+        {% for author in all_authors %}
+            <h3>Books by {{ author }}</h3>
+            <ul>
+                {% for book in author.books.all %}
+                    <li>{{ book.title }} published on {{ book.published_on }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+    <h2>Authors from oldest to youngest</h2>
+
+    <div>
+        <ul>        
+            {% for author in authors_in_asc_order_of_birth %}
+                <li>{{ author }} born on {{ author.birth_date }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    <h2>Authors from youngest to oldest</h2>
+
+    <div>
+        <ul>        
+            {% for author in authors_in_desc_order_of_birth %}
+                <li>{{ author }} born on {{ author.birth_date }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h2>First 5 Authors from oldest to youngest</h2>
+
+    <div>
+        <ul>        
+            {% for author in first_5_authors_asc %}
+                <li>{{ author }} born on {{ author.birth_date }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock body %}
