@@ -1,9 +1,10 @@
 from django.db import models
 
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 class Author(models.Model):
-    first_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, validators=[MinLengthValidator(2)])
     last_name = models.CharField(max_length=100)
     birth_date = models.DateField()
     is_nigerian = models.BooleanField(default=True)

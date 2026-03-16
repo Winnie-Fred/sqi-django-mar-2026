@@ -14,9 +14,9 @@ Full MVT
         <ul>        
             {% for author in all_authors %}
                 {% if author.picture %}
-                <img width="100" height="100" src="{{ author.picture.url }}" alt="{{ author }}'s Image">
+                <a href="{% url 'authors:author_detail' author.id %}"><img width="100" height="100" src="{{ author.picture.url }}" alt="{{ author }}'s Image"></a>
                 {% else %}
-                <p>No image for {{ author }}</p>
+                <p>No image for <a href="{% url 'authors:author_detail' author.id %}">{{ author }}</a></p>
                 {% endif %}
                 <li>{{ author }} born on {{ author.birth_date }} ({% if author.is_nigerian %}Nigerian{% else %}Non-nigerian{% endif %})</li>
             {% endfor %}
@@ -68,12 +68,11 @@ Full MVT
             <ul>
                 {% for book in author.books.all %}
                     <img width="100" height="100" src="{{ book.cover_image.url }}" alt="Cover Image of {{ book.title }}">
-                    <li>{{ book.title }} published on {{ book.published_on }}</li>
+                    <li><a href="{% url 'library:book_detail' book.pk %}">{{ book.title }}</a> published on {{ book.published_on }}</li>
                 {% endfor %}
             </ul>
         {% endfor %}
     </div>
-
     <h2>Authors from oldest to youngest</h2>
 
     <div>

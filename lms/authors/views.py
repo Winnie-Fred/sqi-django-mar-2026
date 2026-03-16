@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 
 from .models import Author
 from library.models import Book
@@ -37,3 +36,7 @@ def full_mvt(request):
 # 1. Get all the books
 # 2. Get all the books published after 2nd of Feb, 1997
 # 3. Get all the books in desc order (title)
+
+
+def author_detail(request, author_pk):
+    return render(request, "authors/author-detail.html", {"author": get_object_or_404(Author, pk=author_pk)})

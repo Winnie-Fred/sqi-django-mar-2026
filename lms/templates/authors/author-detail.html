@@ -1,0 +1,16 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+{{ author }}
+{% endblock title %}
+
+
+{% block body %}
+<div>
+    <h1>{{ author }}</h1>
+
+    {% for book in author.books.all %}
+        <p>{{ book.title }}</p>
+    {% endfor %}
+</div>
+{% endblock body %}
