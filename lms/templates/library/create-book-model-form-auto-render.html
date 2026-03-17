@@ -1,0 +1,18 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+Create a Book
+{% endblock title %}
+
+
+{% block body %}
+<div>
+    <h1>Create a Book</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% comment %} Cross Site Request Forgery {% endcomment %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock body %}

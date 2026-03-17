@@ -8,5 +8,11 @@ All Authors
 {% block body %}
 <div>
     <h1>All the Authors</h1>
+
+    {% for author in all_authors %}
+        <p>{{ author }}</p>
+    {% endfor %}
+
+
 </div>
 {% endblock body %}

@@ -1,0 +1,19 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+New Author
+{% endblock title %}
+
+
+{% block body %}
+<div>
+    <h1>Create new Author</h1>
+
+    <form action="{% url 'authors:create_author' %}" method="POST">
+        {% csrf_token %}
+        {{ author_form.as_ul }}
+        <button type="submit">Create</button>
+    </form>
+
+</div>
+{% endblock body %}
