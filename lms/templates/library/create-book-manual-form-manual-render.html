@@ -1,0 +1,99 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+Create a Book
+{% endblock title %}
+
+
+{% block body %}
+<div>
+    <h1>Create a Book Manually</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% comment %} Cross Site Request Forgery {% endcomment %}
+        {% comment %} {{ form.title }} {% endcomment %}
+
+    <div>
+        <ul>
+        {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <ul>
+        {% for error in form.errors.title %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        <p>
+            <label for="title">Title</label>
+            <input type="text" name="title" value="{{ form.title.value|default_if_none:'' }}">
+        </p>
+    </div>
+
+
+    <div>
+        <ul>
+        {% for error in form.errors.author %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        <p>
+            <label for="title">Author</label>
+            <select name="author">
+                {% for author in form.fields.author.queryset %}
+                    <option value="{{ author.id }}" {% if author.id|stringformat:"s" == form.author.value %}selected{% endif %} >{{ author }}</option>
+                {% endfor %} 
+            </select>
+        </p>
+    </div>
+ 
+    <div>
+        <ul>
+        {% for error in form.errors.number_of_pages %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        <p>
+            <label for="number_of_pages">Number of Pages</label>
+            <input type="text" name="number_of_pages" value="{{ form.number_of_pages.value|default_if_none:'' }}">                
+        </p>
+    </div>
+   
+   
+    <div>
+        <ul>
+        {% for error in form.errors.published_on %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        <p>
+            <label for="published_on">Number of Pages</label>
+            <input type="date" name="published_on" value="{{ form.published_on.value|default_if_none:'' }}">                
+        </p>
+    </div>
+
+    <div>
+        <ul>
+        {% for error in form.errors.cover_image %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        <p>
+            <label for="cover_image">Cover Image</label>
+            <input type="file" name="cover_image">                
+        </p>
+    </div>
+
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock body %}
