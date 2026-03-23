@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+</head>
+<body>
+    <h3>{{ book.title }}</h3>
+    <p>by {{ book.author }}</p>
+
+
+    <div>
+        <h3>Reviews for {{ book.title }}</h3>
+        {% for review in book.reviews.all  %}
+            <div>
+                <h4>{{ review.comment }}</h4>
+                <p>By {{ review.reviewer_name }}</p>
+                <p>>Rating: {{ review.rating }}</p>
+            </div>
+        {% empty %}
+        <p>No reviews yet</p>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3>Leave Your Own Review for {{ book.title }}</h3>
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.errors }}
+            {{ form.non_field_errors }}
+
+            <div>
+                <label for="reviewer_name">Reviewer Name:</label>
+                {{ form.reviewer_name }}
+            </div>
+
+            <div>
+                <label for="rating">Rating:</label>
+                {{ form.rating }}
+            </div>
+
+            <div>
+                <label for="comment">Comment:</label>
+                {{ form.comment }}
+            </div>
+            <button type="submit">Leave Review</button>
+        </form>
+    </div>
+
+</body>
+</html>
