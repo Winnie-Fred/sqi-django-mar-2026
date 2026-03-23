@@ -83,3 +83,55 @@ def create_book_manual_form_manual_render(request):
     return render(request, "library/create-book-manual-form-manual-render.html", context)
 
 
+def update_book_model_form(request, book_pk):
+    book = get_object_or_404(Book, pk=book_pk)
+    form = BookForm(instance=book)
+    if request.method == "POST":
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect("library:book_detail", book_id=book_pk)
+
+    context = {"form": form}
+    return render(request, "library/update-book-model-form.html", context)
+
+
+def update_book_manual_form(request, book_pk):
+    book = get_object_or_404(Book, pk=book_pk)
+    form = BookManualForm(initial={
+        "title": book.title,
+        "author": book.author,
+        "number_of_pages": book.number_of_pages,
+        "published_on": book.published_on,
+        "cover_image": book.cover_image,
+    })
+    if request.method == "POST":
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            book.title = cleaned_data.get("title")
+            book.author = cleaned_data.get("author")
+            book.number_of_pages = cleaned_data.get("number_of_pages")
+            book.published_on = cleaned_data.get("published_on")
+
+            cover_image = cleaned_data.get("cover_image")
+            if cover_image:
+                book.cover_image = cover_image
+
+            book.save()
+            return redirect("library:book_detail", book_id=book_pk)
+
+    context = {"form": form}
+    return render(request, "library/update-book-model-form.html", context)
+
+
+def confirm_delete(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    return render(request, "library/confirm-delete.html", {"book": book})
+
+
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    if request.method == "POST":
+        book.delete()
+    return redirect("library:book_list")

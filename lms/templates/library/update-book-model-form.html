@@ -1,0 +1,18 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+Update {{ book.title }}
+{% endblock title %}
+
+
+{% block body %}
+<div>
+    <h1>Update {{ book.title }}</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Book</button>
+    </form>
+</div>
+
+{% endblock body %}
