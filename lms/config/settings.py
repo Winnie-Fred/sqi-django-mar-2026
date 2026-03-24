@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Local
     'authors',
     'library',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'library:book_list'
+LOGOUT_REDIRECT_URL = 'library:book_list'

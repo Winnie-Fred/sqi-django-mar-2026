@@ -4,6 +4,14 @@
             <li>Home</li>
             <li>About</li>
             <li>Contact</li>
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'users:logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Log out</button>
+                </form>
+            {% else %}
+            <a href="{% url 'users:login' %}">Log In</a>
+            {% endif %}
         </ul>
     </nav>
 </header>

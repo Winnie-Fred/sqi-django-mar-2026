@@ -1,0 +1,50 @@
+/* Container */
+.message-div {
+    margin: 20px 0;
+}
+
+/* Remove default list styling */
+.message-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Base message style */
+.message-li {
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: system-ui, -apple-system, sans-serif;
+    border: 1px solid transparent;
+}
+
+/* Success (Django: success) */
+.message-li.success {
+    background-color: #e6fffa;
+    color: #065f46;
+    border-color: #34d399;
+}
+
+/* Error (Django: error) */
+.message-li.error {
+    background-color: #fee2e2;
+    color: #7f1d1d;
+    border-color: #f87171;
+}
+
+/* Warning (Django: warning) */
+.message-li.warning {
+    background-color: #fef3c7;
+    color: #78350f;
+    border-color: #facc15;
+}
+
+/* Info (Django: info) */
+.message-li.info {
+    background-color: #e0f2fe;
+    color: #075985;
+    border-color: #38bdf8;
+}

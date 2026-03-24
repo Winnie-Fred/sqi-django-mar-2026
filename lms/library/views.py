@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Book
 from .forms import BookForm, BookManualForm
@@ -27,6 +29,7 @@ def book_detail(request, book_id):
     return render(request, "library/book-detail.html", {"book": book})
 
 
+@login_required
 def create_book_model_form_auto_render(request):
     print("request: ", request)
     form = BookForm()
@@ -35,7 +38,9 @@ def create_book_model_form_auto_render(request):
         print("request.POST: ", request.POST)
         print("request.FILES: ", request.FILES)
         if form.is_valid():
-            form.save()
+            book = form.save(commit=False)
+            book.added_by = request.user
+            book.save()
             return redirect("library:book_list")
         
     # print("form: ", form)
@@ -44,7 +49,7 @@ def create_book_model_form_auto_render(request):
     context = {"form": form}
     return render(request, "library/create-book-model-form-auto-render.html", context)
 
-
+@login_required
 def create_book_manual_form_manual_render(request):
     form = BookManualForm()
     if request.method == "POST":
@@ -82,7 +87,7 @@ def create_book_manual_form_manual_render(request):
     context = {"form": form}
     return render(request, "library/create-book-manual-form-manual-render.html", context)
 
-
+@login_required
 def update_book_model_form(request, book_pk):
     book = get_object_or_404(Book, pk=book_pk)
     form = BookForm(instance=book)
@@ -95,9 +100,15 @@ def update_book_model_form(request, book_pk):
     context = {"form": form}
     return render(request, "library/update-book-model-form.html", context)
 
-
+@login_required
 def update_book_manual_form(request, book_pk):
     book = get_object_or_404(Book, pk=book_pk)
+    print(book.added_by)
+    print(request.user)
+    print(type(request.user))
+    if book.added_by != request.user:
+        messages.error(request, "You do not have permission to update that book.")
+        return redirect("library:book_list")
     form = BookManualForm(initial={
         "title": book.title,
         "author": book.author,
@@ -124,12 +135,12 @@ def update_book_manual_form(request, book_pk):
     context = {"form": form}
     return render(request, "library/update-book-model-form.html", context)
 
-
+@login_required
 def confirm_delete(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     return render(request, "library/confirm-delete.html", {"book": book})
 
-
+@login_required
 def delete_book(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     if request.method == "POST":

@@ -1,9 +1,11 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 
 from authors.models import Author
 
+User = get_user_model()
 
 def validate_title(value: str):
     if not value.startswith("The "):
@@ -16,6 +18,7 @@ class Book(models.Model):
     number_of_pages = models.PositiveIntegerField(validators=[MaxValueValidator(7000)])
     published_on = models.DateField()
     cover_image = models.ImageField(upload_to="cover_images/", default="default_cover_image.jpg")
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.title} by {self.author}"
