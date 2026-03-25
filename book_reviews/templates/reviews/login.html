@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — BookVerse</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-logo a {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .auth-logo span {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .input-error {
+      font-size: 0.8rem;
+      color: var(--red);
+      margin-top: 0.25rem;
+    }
+    .form-error-box {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      color: var(--red);
+      margin-bottom: 1.25rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-bg-glow"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">📚</div>
+      Book<span>Verse</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="books.html" data-page="books">Books</a></li>
+    </ul>
+    <div class="nav-actions" id="nav-actions"></div>
+  </nav>
+
+  <main class="auth-page page-fade-in">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <a href="index.html">📚 Book<span>Verse</span></a>
+      </div>
+
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to your account to continue</p>
+
+      <div class="form-error-box" id="error-box"></div>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submit-btn" style="margin-top:0.5rem">
+          Log In
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Sign Up</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    initNav('');
+
+    // Redirect if already logged in
+    if (getCurrentUser()) {
+      window.location.href = 'index.html';
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorBox = document.getElementById('error-box');
+      const btn = document.getElementById('submit-btn');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Signing in…';
+
+      setTimeout(() => {
+        const result = loginUser(email, password);
+        if (!result.success) {
+          errorBox.style.display = 'block';
+          errorBox.textContent = result.error;
+          btn.disabled = false;
+          btn.textContent = 'Log In';
+          return;
+        }
+
+        showToast(`Welcome back, ${result.user.name.split(' ')[0]}!`, 'success');
+
+        // Redirect to next param or home
+        const next = new URLSearchParams(window.location.search).get('next');
+        setTimeout(() => {
+          window.location.href = next ? decodeURIComponent(next) : 'index.html';
+        }, 600);
+      }, 500);
+    }
+  </script>
+</body>
+</html>

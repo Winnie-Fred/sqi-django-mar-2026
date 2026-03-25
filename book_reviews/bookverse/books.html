@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books — BookVerse</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .books-page-header {
+      margin-bottom: 2rem;
+    }
+    .books-page-header h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .books-page-header h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .results-info {
+      font-size: 0.875rem;
+      color: var(--text-dim);
+      margin-top: 0.5rem;
+    }
+    .sort-select {
+      width: auto;
+      min-width: 160px;
+    }
+    .no-results {
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">📚</div>
+      Book<span>Verse</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="books.html" data-page="books">Books</a></li>
+    </ul>
+    <div class="nav-actions" id="nav-actions"></div>
+  </nav>
+
+  <main class="page page-fade-in">
+    <div class="books-page-header">
+      <h1>Explore <em>Books</em></h1>
+      <p style="color:var(--text-sub)">Browse our collection — search, filter by genre, and dive into your next great read.</p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search by title or author…">
+      </div>
+      <select class="sort-select" id="sort-select">
+        <option value="default">Default</option>
+        <option value="title-az">Title A–Z</option>
+        <option value="title-za">Title Z–A</option>
+        <option value="rating-desc">Highest Rated</option>
+        <option value="year-desc">Newest First</option>
+        <option value="year-asc">Oldest First</option>
+      </select>
+    </div>
+
+    <!-- Genre Pills -->
+    <div class="genre-pills" id="genre-pills" style="margin-bottom:2rem"></div>
+
+    <div class="results-info" id="results-info"></div>
+
+    <!-- Books Grid -->
+    <div class="books-grid" id="books-grid" style="margin-top:1rem"></div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">📚 BookVerse</div>
+    <p>© 2026 BookVerse. Celebrating stories that matter.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    initNav('books');
+
+    const books = getBooks();
+    let activeGenre = 'All';
+    let searchQuery = '';
+    let sortMode = 'default';
+
+    // Build genre list
+    const allGenres = ['All', ...new Set(books.map(b => b.genre))];
+    const pillsContainer = document.getElementById('genre-pills');
+    pillsContainer.innerHTML = allGenres.map(g => `
+      <button class="genre-pill ${g === 'All' ? 'active' : ''}" onclick="setGenre('${g}')">${g}</button>
+    `).join('');
+
+    function setGenre(genre) {
+      activeGenre = genre;
+      document.querySelectorAll('.genre-pill').forEach(p => {
+        p.classList.toggle('active', p.textContent === genre);
+      });
+      renderBooks();
+    }
+
+    document.getElementById('search-input').addEventListener('input', e => {
+      searchQuery = e.target.value.toLowerCase();
+      renderBooks();
+    });
+
+    document.getElementById('sort-select').addEventListener('change', e => {
+      sortMode = e.target.value;
+      renderBooks();
+    });
+
+    function renderBooks() {
+      let list = books.filter(b => {
+        const matchGenre = activeGenre === 'All' || b.genre === activeGenre;
+        const matchSearch = !searchQuery ||
+          b.title.toLowerCase().includes(searchQuery) ||
+          b.author.toLowerCase().includes(searchQuery);
+        return matchGenre && matchSearch;
+      });
+
+      // Sort
+      list = [...list].sort((a, b) => {
+        const rA = getAverageRating(a.id);
+        const rB = getAverageRating(b.id);
+        if (sortMode === 'title-az') return a.title.localeCompare(b.title);
+        if (sortMode === 'title-za') return b.title.localeCompare(a.title);
+        if (sortMode === 'rating-desc') return rB - rA;
+        if (sortMode === 'year-desc') return b.year - a.year;
+        if (sortMode === 'year-asc') return a.year - b.year;
+        return 0;
+      });
+
+      document.getElementById('results-info').textContent =
+        `Showing ${list.length} book${list.length !== 1 ? 's' : ''}`;
+
+      const grid = document.getElementById('books-grid');
+      if (!list.length) {
+        grid.innerHTML = `
+          <div class="no-results empty-state">
+            <div class="icon">🔍</div>
+            <h3>No books found</h3>
+            <p>Try adjusting your search or genre filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = list.map(book => {
+        const avg = getAverageRating(book.id);
+        const count = getReviewsForBook(book.id).length;
+        return `
+          <div class="book-card" onclick="window.location.href='book-detail.html?id=${book.id}'" style="animation: fadeInUp 0.3s ease both">
+            <img class="book-card-cover" src="${book.cover}" alt="${book.title}" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="book-card-cover-placeholder" style="display:none">📚</div>
+            <div class="book-card-body">
+              <div class="book-card-genre">
+                <span class="badge" data-genre="${book.genre}">${book.genre.toUpperCase()}</span>
+              </div>
+              <div class="book-card-title">${book.title}</div>
+              <div class="book-card-author">by ${book.author} · ${book.year}</div>
+              <div class="book-card-rating">
+                ${renderStars(avg)}
+                <span style="color:var(--text-sub)">${avg > 0 ? avg.toFixed(1) : '—'}</span>
+                <span style="color:var(--text-dim);font-size:0.78rem">(${count})</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    renderBooks();
+  </script>
+</body>
+</html>

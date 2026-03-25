@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Review — BookVerse</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 2.25rem;
+      line-height: 1;
+      color: var(--text-dim);
+      transition: color 0.15s, transform 0.15s;
+      padding: 0.1rem;
+    }
+
+    .star-btn:hover,
+    .star-btn.lit {
+      color: var(--gold);
+      transform: scale(1.15);
+    }
+
+    .rating-label {
+      font-size: 0.875rem;
+      color: var(--text-sub);
+      margin-left: 0.5rem;
+    }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-align: right;
+      margin-top: 0.25rem;
+    }
+    .char-count.warn { color: var(--gold); }
+    .char-count.over { color: var(--red); }
+
+    .edit-expired-banner {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      color: var(--red);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .edit-window-banner {
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      color: var(--accent2);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">📚</div>
+      Book<span>Verse</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="books.html" data-page="books">Books</a></li>
+    </ul>
+    <div class="nav-actions" id="nav-actions"></div>
+  </nav>
+
+  <main class="review-form-page page-fade-in" id="main">
+    <div style="text-align:center;padding:4rem;color:var(--text-dim)">
+      <div class="loading-spinner"></div>
+      <p style="margin-top:1rem">Loading…</p>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">📚 BookVerse</div>
+    <p>© 2026 BookVerse. Celebrating stories that matter.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const user = requireAuth(window.location.href);
+    if (user) initNav('books');
+
+    const reviewId = getParam('reviewId');
+    if (!reviewId) window.location.href = 'books.html';
+
+    const review = getReviewById(reviewId);
+    if (!review) {
+      document.getElementById('main').innerHTML = `
+        <div class="empty-state">
+          <div class="icon">❌</div>
+          <h3>Review not found</h3>
+          <a href="books.html" class="btn btn-primary" style="margin-top:1rem">Browse Books</a>
+        </div>
+      `;
+    } else if (review.userId !== user.id) {
+      showToast('You can only edit your own reviews.', 'error');
+      window.location.href = 'books.html';
+    } else {
+      const book = getBookById(review.bookId);
+      const postedAt = new Date(review.createdAt).getTime();
+      const editExpired = (Date.now() - postedAt) > 5 * 60 * 1000;
+
+      renderEditForm(book, editExpired);
+    }
+
+    function renderEditForm(book, editExpired) {
+      const remaining = Math.max(0, Math.ceil((5 * 60 * 1000 - (Date.now() - new Date(review.createdAt).getTime())) / 1000));
+
+      document.getElementById('main').innerHTML = `
+        <div class="breadcrumb">
+          <a href="books.html">Books</a>
+          <span>›</span>
+          <a href="book-detail.html?id=${book.id}">${book.title}</a>
+          <span>›</span>
+          <span>Edit Review</span>
+        </div>
+
+        <div class="review-form-card">
+          <h1 style="font-size:1.75rem;margin-bottom:0.25rem">Edit Review</h1>
+          <p style="color:var(--text-sub);font-size:0.9rem;margin-bottom:1.5rem">Update your review for this book.</p>
+
+          ${editExpired ? `
+            <div class="edit-expired-banner">
+              ⏰ The 5-minute edit window has expired. You can no longer edit this review — but you can delete it.
+            </div>
+          ` : `
+            <div class="edit-window-banner">
+              ⏱ Edit window closes in <strong id="countdown">${remaining}s</strong>
+            </div>
+          `}
+
+          <!-- Book Info -->
+          <div class="review-form-book-info">
+            <div class="review-form-book-thumb-placeholder">📚</div>
+            <div>
+              <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem">${book.title}</div>
+              <div style="font-size:0.825rem;color:var(--text-sub)">by ${book.author}</div>
+              <span class="badge" data-genre="${book.genre}" style="margin-top:0.35rem">${book.genre}</span>
+            </div>
+          </div>
+
+          ${editExpired ? `
+            <div class="form-actions" style="justify-content:space-between">
+              <a href="book-detail.html?id=${book.id}" class="btn btn-ghost">← Back to Book</a>
+              <button class="btn btn-danger" onclick="handleDelete()">🗑 Delete Review</button>
+            </div>
+          ` : `
+            <form id="edit-form" onsubmit="handleUpdate(event)">
+              <!-- Star Rating -->
+              <div class="form-group">
+                <label>Your Rating <span style="color:var(--red)">*</span></label>
+                <div style="display:flex;align-items:center;gap:0.5rem">
+                  <div id="stars-container">
+                    <button type="button" class="star-btn" data-val="1">★</button>
+                    <button type="button" class="star-btn" data-val="2">★</button>
+                    <button type="button" class="star-btn" data-val="3">★</button>
+                    <button type="button" class="star-btn" data-val="4">★</button>
+                    <button type="button" class="star-btn" data-val="5">★</button>
+                  </div>
+                  <span class="rating-label" id="rating-label"></span>
+                </div>
+                <input type="hidden" id="rating-value" value="${review.rating}">
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="form-group">
+                <label for="review-title">Review Title <span style="color:var(--text-dim);font-weight:400">(optional)</span></label>
+                <input type="text" id="review-title" placeholder="Summarize your thoughts…" maxlength="100" value="${escapeHtml(review.title || '')}">
+              </div>
+
+              <div class="form-group">
+                <label for="review-body">Your Review <span style="color:var(--red)">*</span></label>
+                <textarea id="review-body" rows="6" placeholder="What did you think about this book?" maxlength="2000" required>${escapeHtml(review.body)}</textarea>
+                <div class="char-count" id="char-count">${review.body.length} / 2000</div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-ghost" onclick="window.location.href='book-detail.html?id=${book.id}'">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="handleDelete()" style="margin-right:auto">🗑 Delete</button>
+                <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">Save Changes →</button>
+              </div>
+            </form>
+          `}
+        </div>
+      `;
+
+      if (!editExpired) {
+        initStars();
+        startCountdown(book);
+      }
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function initStars() {
+      let selectedRating = review.rating;
+      const ratingLabels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent'];
+      const stars = document.querySelectorAll('.star-btn');
+
+      document.getElementById('rating-label').textContent = ratingLabels[selectedRating];
+      updateStars(selectedRating);
+
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          selectedRating = parseInt(star.dataset.val);
+          document.getElementById('rating-value').value = selectedRating;
+          document.getElementById('rating-label').textContent = ratingLabels[selectedRating];
+          updateStars(selectedRating);
+        });
+        star.addEventListener('mouseenter', () => updateStars(parseInt(star.dataset.val)));
+        star.addEventListener('mouseleave', () => updateStars(selectedRating));
+      });
+
+      function updateStars(upTo) {
+        stars.forEach(s => s.classList.toggle('lit', parseInt(s.dataset.val) <= upTo));
+      }
+
+      // Char counter
+      const bodyEl = document.getElementById('review-body');
+      const charCountEl = document.getElementById('char-count');
+      bodyEl.addEventListener('input', () => {
+        const len = bodyEl.value.length;
+        charCountEl.textContent = `${len} / 2000`;
+        charCountEl.className = 'char-count' + (len > 1800 ? ' warn' : '') + (len >= 2000 ? ' over' : '');
+      });
+    }
+
+    function startCountdown(book) {
+      const cdEl = document.getElementById('countdown');
+      if (!cdEl) return;
+      const iv = setInterval(() => {
+        const rem = Math.max(0, Math.ceil((5 * 60 * 1000 - (Date.now() - new Date(review.createdAt).getTime())) / 1000));
+        cdEl.textContent = rem + 's';
+        if (rem <= 0) {
+          clearInterval(iv);
+          renderEditForm(book, true);
+        }
+      }, 1000);
+    }
+
+    function handleUpdate(e) {
+      e.preventDefault();
+      const rating = parseInt(document.getElementById('rating-value').value);
+      if (!rating) { showToast('Please select a rating.', 'error'); return; }
+      const body = document.getElementById('review-body').value.trim();
+      if (!body) { showToast('Please write your review.', 'error'); return; }
+
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Saving…';
+
+      setTimeout(() => {
+        updateReview(reviewId, {
+          rating,
+          title: document.getElementById('review-title').value.trim(),
+          body,
+          updatedAt: new Date().toISOString()
+        });
+        showToast('Review updated!', 'success');
+        setTimeout(() => window.location.href = 'book-detail.html?id=' + review.bookId, 600);
+      }, 400);
+    }
+
+    function handleDelete() {
+      if (!confirm('Delete this review permanently?')) return;
+      deleteReview(reviewId);
+      showToast('Review deleted.', 'success');
+      setTimeout(() => window.location.href = 'book-detail.html?id=' + review.bookId, 600);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — BookVerse</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-logo a {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .auth-logo span {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .form-error-box {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      color: var(--red);
+      margin-bottom: 1.25rem;
+      display: none;
+    }
+    .password-hint {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+    }
+    .terms {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-bg-glow"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">📚</div>
+      Book<span>Verse</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="books.html" data-page="books">Books</a></li>
+    </ul>
+    <div class="nav-actions" id="nav-actions"></div>
+  </nav>
+
+  <main class="auth-page page-fade-in">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <a href="index.html">📚 Book<span>Verse</span></a>
+      </div>
+
+      <h1>Create Account</h1>
+      <p class="subtitle">Sign up to start reviewing books</p>
+
+      <div class="form-error-box" id="error-box"></div>
+
+      <form id="register-form" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Enter your name" required autocomplete="name" minlength="2">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Create a password" required autocomplete="new-password" minlength="6">
+          <div class="password-hint">At least 6 characters</div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" placeholder="Confirm your password" required autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submit-btn" style="margin-top:0.5rem">
+          Create Account
+        </button>
+      </form>
+
+      <div class="terms">
+        By creating an account, you agree to our terms of service and privacy policy.
+      </div>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Log In</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    initNav('');
+
+    // Redirect if already logged in
+    if (getCurrentUser()) {
+      window.location.href = 'index.html';
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm-password').value;
+      const errorBox = document.getElementById('error-box');
+      const btn = document.getElementById('submit-btn');
+
+      errorBox.style.display = 'none';
+
+      if (password !== confirm) {
+        errorBox.style.display = 'block';
+        errorBox.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      if (password.length < 6) {
+        errorBox.style.display = 'block';
+        errorBox.textContent = 'Password must be at least 6 characters.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Creating account…';
+
+      setTimeout(() => {
+        const result = registerUser(name, email, password);
+        if (!result.success) {
+          errorBox.style.display = 'block';
+          errorBox.textContent = result.error;
+          btn.disabled = false;
+          btn.textContent = 'Create Account';
+          return;
+        }
+
+        // Auto-login after register
+        loginUser(email, password);
+        showToast(`Welcome to BookVerse, ${name.split(' ')[0]}!`, 'success');
+        setTimeout(() => window.location.href = 'books.html', 700);
+      }, 500);
+    }
+  </script>
+</body>
+</html>
