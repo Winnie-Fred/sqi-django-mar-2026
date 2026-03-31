@@ -1,11 +1,20 @@
 from django.db import models
 
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 # Create your models here.
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     bio = models.TextField()
     year_of_birth = models.DateField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class GenreChoices(models.TextChoices):
@@ -31,3 +40,46 @@ class Book(models.Model):
     isbn = models.CharField()
     number_of_pages = models.IntegerField()
     cover_image = models.ImageField(upload_to="book_cover_images/")
+
+    def already_reviewed(self, added_by):
+        return self.reviews.filter(added_by=added_by).exists()
+
+    def average_rating(self):
+        all_ratings = [rating_dict["rating"] for rating_dict in self.reviews.values("rating")]
+        return sum(all_ratings) / len(all_ratings) if all_ratings else 0
+        
+    def float_average_rating(self):
+        return round(self.average_rating(), 1)
+    
+    def int_average_rating(self):
+        return round(self.average_rating())
+
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
+
+class Review(models.Model):
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    content = models.TextField()
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_reviews")
+    added_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Review by {self.added_by} on {self.book.title} - {self.rating} stars: {self.content[:100]}..."
+
+    def clean(self):
+        # Don't allow user to leave more than one review
+        if not self.pk and getattr(self, "book", None) and self.book.already_reviewed(self.added_by):
+            print(f"Calling .clean() -> {getattr(self, "book", None)} and {self.book.already_reviewed(self.added_by)}")
+            raise ValidationError("You have already reviewed this book. You can try editing your existing review.")
+        super().clean()
+
+
+
+
+# >>> book.reviews.values_list("rating")
+# <QuerySet [(3,), (3,), (5,), (5,), (1,), (1,), (3,), (5,), (3,), (3,), (2,)]>
+# >>> sum(rating[0] for rating in book.reviews.values_list("rating"))
+# 34

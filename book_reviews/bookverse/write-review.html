@@ -120,7 +120,8 @@
         </ul>
       </div>
 
-      <form id="review-form" onsubmit="handleSubmit(event)">
+      <form id="review-form" method="POST">
+        {% csrf_token %}
         <!-- Star Rating -->
         <div class="form-group">
           <label>Your Rating <span style="color:var(--red)">*</span></label>
@@ -168,41 +169,6 @@
 
   <script src="app.js"></script>
   <script>
-    const user = requireAuth(window.location.href);
-    if (user) initNav('books');
-
-    const bookId = getParam('bookId');
-    if (!bookId) window.location.href = 'books.html';
-
-    const book = getBookById(bookId);
-    if (!book) window.location.href = 'books.html';
-
-    // Update breadcrumb
-    document.getElementById('breadcrumb').innerHTML = `
-      <a href="books.html">Books</a>
-      <span>›</span>
-      <a href="book-detail.html?id=${bookId}">${book.title}</a>
-      <span>›</span>
-      <span>Write a Review</span>
-    `;
-
-    // Check if user already reviewed
-    const existingReview = getReviewsForBook(bookId).find(r => r.userId === user.id);
-    if (existingReview) {
-      showToast('You have already reviewed this book.', 'info');
-      window.location.href = 'book-detail.html?id=' + bookId;
-    }
-
-    // Book info
-    document.getElementById('book-info').innerHTML = `
-      <div class="review-form-book-thumb-placeholder">📚</div>
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem">${book.title}</div>
-        <div style="font-size:0.825rem;color:var(--text-sub)">by ${book.author}</div>
-        <span class="badge" data-genre="${book.genre}" style="margin-top:0.35rem">${book.genre}</span>
-      </div>
-    `;
-
     // Star rating interaction
     let selectedRating = 0;
     const ratingLabels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent'];
@@ -227,52 +193,7 @@
       });
     }
 
-    // Character counter
-    const bodyInput = document.getElementById('review-body');
-    const charCount = document.getElementById('char-count');
-    bodyInput.addEventListener('input', () => {
-      const len = bodyInput.value.length;
-      charCount.textContent = `${len} / 2000`;
-      charCount.className = 'char-count' + (len > 1800 ? ' warn' : '') + (len >= 2000 ? ' over' : '');
-    });
-
-    // Submit
-    function handleSubmit(e) {
-      e.preventDefault();
-      const rating = parseInt(document.getElementById('rating-value').value);
-      if (!rating) {
-        showToast('Please select a star rating.', 'error');
-        return;
-      }
-      const body = document.getElementById('review-body').value.trim();
-      if (!body) {
-        showToast('Please write your review.', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.innerHTML = '<span class="loading-spinner"></span> Posting…';
-
-      const review = {
-        id: genId(),
-        bookId,
-        userId: user.id,
-        userName: user.name,
-        rating,
-        title: document.getElementById('review-title').value.trim(),
-        body,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-
-      setTimeout(() => {
-        addReview(review);
-        showToast('Review posted! You can edit it within 5 minutes.', 'success');
-        setTimeout(() => window.location.href = 'book-detail.html?id=' + bookId, 700);
-      }, 400);
-    }
-
+    
     function goBack() {
       window.location.href = 'book-detail.html?id=' + bookId;
     }

@@ -1,0 +1,123 @@
+python manage.py shell <<'EOF'
+import os
+import tempfile
+import shutil
+from urllib.request import urlretrieve
+from django.core.files import File
+from reviews.models import Author, Book, GenreChoices
+
+# --- AUTHORS ---
+maggie_stiefvater=Author.objects.create(first_name="Maggie", last_name="Stiefvater", bio="Maggie Stiefvater is an American writer of young adult fiction. She is best known for her fantasy series such as 'The Raven Cycle' and 'Shiver', blending themes of myth, magic, and character-driven plots.", year_of_birth="1981-11-18")
+agatha_christie=Author.objects.create(first_name="Agatha", last_name="Christie", bio="Agatha Christie, known as the 'Queen of Crime', was a prolific English writer. She created iconic detectives like Hercule Poirot and Miss Marple, and her works have become cornerstones of the mystery genre.", year_of_birth="1890-09-15")
+caitlin_kittredge=Author.objects.create(first_name="Caitlin", last_name="Kittredge", bio="Caitlin Kittredge is an American author known for her urban fantasy and steampunk novels. Her works often explore dark, gritty themes, blending magic with complex, morally ambiguous characters.", year_of_birth="1984-09-02")
+c_j_tudor=Author.objects.create(first_name="C.J.", last_name="Tudor", bio="C.J. Tudor is a British thriller writer whose debut novel, 'The Chalk Man', gained widespread acclaim. She is known for crafting suspenseful psychological thrillers that delve into dark and mysterious worlds.", year_of_birth="1972-06-26")
+jake_patterson=Author.objects.create(first_name="Jake", last_name="Patterson", bio="Jake Patterson is an American thriller writer. He gained popularity for his gripping and suspenseful crime novels, which often feature complex protagonists embroiled in intricate murder mysteries.", year_of_birth="1975-04-10")
+keri_lake=Author.objects.create(first_name="Keri", last_name="Lake", bio="Keri Lake is a bestselling author known for her dark romance and dystopian fantasy novels. Her work often explores post-apocalyptic worlds, combining strong emotional narratives with thrilling action.", year_of_birth="1980-11-12")
+jack_zipes=Author.objects.create(first_name="Jack", last_name="Zipes", bio="Jack Zipes is a renowned folklorist and author. His expertise in fairy tales has made him one of the foremost scholars in his field. He is particularly known for analyzing the societal implications of folklore and children's literature.", year_of_birth="1937-12-07")
+brad_abraham=Author.objects.create(first_name="Brad", last_name="Abraham", bio="Brad Abraham is a Canadian author and screenwriter. His debut novel 'Magicians Impossible' blends elements of urban fantasy and spy thriller, showcasing his versatility in storytelling.", year_of_birth="1974-02-15")
+woody_allen=Author.objects.create(first_name="Woody", last_name="Allen", bio="Woody Allen is an American filmmaker, writer, and comedian. Known for his wit and neurotic style, he has created numerous critically acclaimed films, often focusing on existential themes and human relationships.", year_of_birth="1935-12-01")
+heather_gudenkauf=Author.objects.create(first_name="Heather", last_name="Gudenkauf", bio="Heather Gudenkauf is a bestselling American author of mystery and suspense novels. Her works often focus on small-town secrets, family dynamics, and emotional struggles, with a strong sense of place and atmosphere.", year_of_birth="1967-10-06")
+rebecca_mead=Author.objects.create(first_name="Rebecca", last_name="Mead", bio="Rebecca Mead is a British-American author and journalist. Best known for her memoir 'My Life in Middlemarch', she blends personal narrative with literary analysis in her writing.", year_of_birth="1966-06-12")
+drake_green=Author.objects.create(first_name="Drake", last_name="Green", bio="Drake Green is a contemporary American author known for his mystery thrillers. His works often focus on high-stakes situations involving espionage, government conspiracies, and psychological drama.", year_of_birth="1982-07-23")
+barry_lopez=Author.objects.create(first_name="Barry", last_name="Lopez", bio="Barry Lopez was an American author and essayist whose works centered on natural history and environmental issues. His book 'Arctic Dreams' won the National Book Award and established him as a leading voice on wilderness and ethics.", year_of_birth="1945-01-06")
+lexa_hillyer=Author.objects.create(first_name="Lexa", last_name="Hillyer", bio="Lexa Hillyer is a YA author and poet known for her fantasy novels that often explore themes of self-discovery, adventure, and complex female protagonists. She is also the co-founder of a successful publishing company.", year_of_birth="1982-06-18")
+melissa_decarlo=Author.objects.create(first_name="Melissa", last_name="DeCarlo", bio="Melissa DeCarlo is an American novelist who gained recognition with her debut novel 'The Art of Crash Landing', which combines humor and heartache in a story about self-discovery and family secrets.", year_of_birth="1969-03-22")
+lawrence_eduglas=Author.objects.create(first_name="Lawrence", last_name="Eduglas", bio="Lawrence Eduglas is an author known for his rich historical fiction novels. He brings a deep sense of time and place to his narratives, often focusing on human conflicts and the complexities of power.", year_of_birth="1973-05-14")
+lisa_o_donnell=Author.objects.create(first_name="Lisa", last_name="O'Donnell", bio="Lisa O'Donnell is a Scottish author and screenwriter whose debut novel, 'The Death of Bees', won the Commonwealth Book Prize. She writes deeply affecting stories with a unique voice, often blending dark humor with serious themes.", year_of_birth="1972-09-22")
+haruki_murakami=Author.objects.create(first_name="Haruki", last_name="Murakami", bio="Haruki Murakami is one of Japan's most celebrated contemporary authors, known for his surreal, dream-like novels that blend magical realism, philosophical musings, and deep emotional undertones.", year_of_birth="1949-01-12")
+ben_marcus=Author.objects.create(first_name="Ben", last_name="Marcus", bio="Ben Marcus is an American author known for his experimental and speculative fiction. His works often challenge traditional narrative structures, exploring the intersections of language, memory, and human experience.", year_of_birth="1967-10-24")
+tom_sweterlitsch=Author.objects.create(first_name="Tom", last_name="Sweterlitsch", bio="Tom Sweterlitsch is an American science fiction author whose debut novel 'The Gone World' is known for its blend of hard science fiction and thriller elements. He often explores dystopian futures and mind-bending time travel.", year_of_birth="1977-08-19")
+f_scott_fitzgerald=Author.objects.create(first_name="F. Scott", last_name="Fitzgerald", bio="F. Scott Fitzgerald was an American novelist and one of the greatest writers of the 20th century. Best known for 'The Great Gatsby', his works captured the essence of the Jazz Age and explored themes of decadence, idealism, and excess.", year_of_birth="1896-09-24")
+cherie_priest=Author.objects.create(first_name="Cherie", last_name="Priest", bio="Cherie Priest is an American author known for her steampunk and urban fantasy novels. Her book 'Boneshaker' became a cult favorite, and her works are celebrated for their inventive world-building and strong, complex characters.", year_of_birth="1975-07-30")
+m_l_stedman=Author.objects.create(first_name="M.L.", last_name="Stedman", bio="M.L. Stedman is an Australian author whose debut novel 'The Light Between Oceans' became a bestseller and was adapted into a major motion picture. Her works often focus on moral dilemmas and emotional depth.", year_of_birth="1965-03-01")
+denise_mina=Author.objects.create(first_name="Denise", last_name="Mina", bio="Denise Mina is a Scottish crime writer and playwright. Known for her dark and gritty novels, she often explores themes of poverty, power dynamics, and social justice through complex characters and morally challenging situations.", year_of_birth="1966-08-21")
+amy_reed=Author.objects.create(first_name="Amy", last_name="Reed", bio="Amy Reed is an American YA author known for her emotionally intense novels that often deal with difficult topics such as mental illness, addiction, and identity. Her works are characterized by raw honesty and powerful storytelling.", year_of_birth="1975-11-03")
+jon_ronson=Author.objects.create(first_name="Jon", last_name="Ronson", bio="Jon Ronson is a Welsh journalist and author known for his humorous and often bizarre explorations of the human mind and society. His bestselling book 'The Psychopath Test' is a fascinating look at mental illness and eccentricity.", year_of_birth="1967-05-10")
+kimmery_martin=Author.objects.create(first_name="Kimmery", last_name="Martin", bio="Kimmery Martin is an American author and former emergency medicine physician. She writes contemporary fiction that often draws on her medical background, exploring the complexities of relationships and life in the medical field.", year_of_birth="1974-11-16")
+patrick_dewitt=Author.objects.create(first_name="Patrick", last_name="deWitt", bio="Patrick deWitt is a Canadian author known for his quirky and darkly humorous novels. His works, such as 'The Sisters Brothers', often explore the absurdities of life through richly drawn characters and sharp dialogue.", year_of_birth="1975-03-22")
+eowyn_ivey=Author.objects.create(first_name="Eowyn", last_name="Ivey", bio="Eowyn Ivey is an American author from Alaska whose debut novel 'The Snow Child' was a finalist for the Pulitzer Prize. Her work often draws on Alaskan wilderness and folklore, blending magical realism with vivid natural imagery.", year_of_birth="1973-06-15")
+james_gunn=Author.objects.create(first_name="James", last_name="Gunn", bio="James Gunn is an American filmmaker, screenwriter, and author. Known for his work in both Hollywood and fiction writing, Gunn is recognized for his eclectic and often satirical works across genres.", year_of_birth="1966-08-05")
+elizabeth_laban=Author.objects.create(first_name="Elizabeth", last_name="Laban", bio="Elizabeth Laban is an American author known for her young adult novels. Her works often focus on relationships, academic life, and personal growth, with an emphasis on emotional intelligence and empathy.", year_of_birth="1975-09-19")
+rachel_joyce=Author.objects.create(first_name="Rachel", last_name="Joyce", bio="Rachel Joyce is a British novelist and playwright best known for her debut novel 'The Unlikely Pilgrimage of Harold Fry'. Her works often explore themes of kindness, human connections, and the complexities of life.", year_of_birth="1962-11-20")
+april_genevieve=Author.objects.create(first_name="April", last_name="Genevieve Tucholke", bio="April Genevieve Tucholke is an American YA author known for her gothic and atmospheric novels. Her writing is often dark and mysterious, blending elements of horror, fantasy, and romance.", year_of_birth="1982-12-08")
+javier_calvo=Author.objects.create(first_name="Javier", last_name="Calvo", bio="Javier Calvo is a Spanish author and screenwriter known for his engaging young adult novels that often explore themes of identity, belonging, and personal growth.", year_of_birth="1982-03-30")
+
+print(f"Created {Author.objects.count()} authors.")
+
+# --- BOOKS (with cover images downloaded from S3) ---
+BASE_URL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/881020/"
+
+books_data = [
+    ("All The Crooked Saints", maggie_stiefvater, GenreChoices.FANTASY, "2017-10-10", "9780545930802", 320, "book10.jpg"),
+    ("And Then There Were None", agatha_christie, GenreChoices.MYSTERY_THRILLER, "1939-11-06", "9780062073488", 272, "book02.jpg"),
+    ("Black Dog", caitlin_kittredge, GenreChoices.HORROR, "2009-09-09", "9780312943637", 365, "book03.jpg"),
+    ("Der Kreide Mann", c_j_tudor, GenreChoices.MYSTERY_THRILLER, "2018-01-09", "9781524760997", 288, "book04.jpg"),
+    ("I Dont Cry Murder", jake_patterson, GenreChoices.MYSTERY_THRILLER, "2011-06-12", "9780980234077", 310, "book05.jpg"),
+    ("Juniper Unraveling", keri_lake, GenreChoices.DYSTOPIAN, "2017-10-01", "9781947726032", 450, "book06.jpg"),
+    ("Little Red Riding Hood", jack_zipes, GenreChoices.FANTASY, "1993-08-15", "9780415908351", 128, "book07.jpg"),
+    ("Magicians Impossible", brad_abraham, GenreChoices.FANTASY, "2017-09-12", "9781250083521", 400, "book08.jpg"),
+    ("Manhattan", woody_allen, GenreChoices.BIO_AUTOBIO, "1979-02-25", "9780345284321", 225, "book09.jpg"),
+    ("Not A Sound", heather_gudenkauf, GenreChoices.MYSTERY_THRILLER, "2017-05-30", "9780778319955", 352, "book01.jpg"),
+    ("One Perfect Day", rebecca_mead, GenreChoices.BIO_AUTOBIO, "2008-05-08", "9781596913560", 256, "book11.jpg"),
+    ("Point Of Control", drake_green, GenreChoices.MYSTERY_THRILLER, "2016-03-07", "9781523855809", 280, "book13.jpg"),
+    ("Resistance", barry_lopez, GenreChoices.HISTORICAL_FICTION, "2004-03-04", "9781400030707", 240, "book12.jpg"),
+    ("Spindle Fire", lexa_hillyer, GenreChoices.FANTASY, "2017-04-11", "9780062440877", 368, "book14.jpg"),
+    ("The Art Of Crash Landing", melissa_decarlo, GenreChoices.FANTASY, "2015-09-08", "9780062390547", 336, "book15.jpg"),
+    ("The Catastrophist", lawrence_eduglas, GenreChoices.HISTORICAL_FICTION, "2007-01-01", "9780061451652", 320, "book16.jpg"),
+    ("The Death Of Bees", lisa_o_donnell, GenreChoices.HISTORICAL_FICTION, "2013-01-02", "9780062209856", 336, "book17.jpg"),
+    ("The Elephant Vanishes", haruki_murakami, GenreChoices.FANTASY, "1993-06-03", "9780679750536", 327, "book18.jpg"),
+    ("The Flame Alphabet", ben_marcus, GenreChoices.DYSTOPIAN, "2012-01-17", "9780307379375", 289, "book19.jpg"),
+    ("The Gone World", tom_sweterlitsch, GenreChoices.SCI_FI, "2018-02-06", "9780425278901", 400, "book20.jpg"),
+    ("The Great Gatsby", f_scott_fitzgerald, GenreChoices.HISTORICAL_FICTION, "1925-04-10", "9780743273565", 180, "book21.jpg"),
+    ("The Inexplicables", cherie_priest, GenreChoices.FANTASY, "2012-11-13", "9780765329487", 368, "book22.jpg"),
+    ("The Light Between Oceans", m_l_stedman, GenreChoices.HISTORICAL_FICTION, "2012-07-23", "9781451681734", 343, "book23.jpg"),
+    ("The Long Drop", denise_mina, GenreChoices.MYSTERY_THRILLER, "2017-03-02", "9781409150628", 240, "book24.jpg"),
+    ("The Nowhere Girls", amy_reed, GenreChoices.HISTORICAL_FICTION, "2017-10-10", "9781481481731", 408, "book25.jpg"),
+    ("The Psychopath Test", jon_ronson, GenreChoices.BIO_AUTOBIO, "2011-05-12", "9781594485754", 288, "book26.jpg"),
+    ("The Queen Of Hearts", kimmery_martin, GenreChoices.ROMANCE, "2018-02-13", "9780399585050", 352, "book27.jpg"),
+    ("The Sisters Brothers", patrick_dewitt, GenreChoices.HISTORICAL_FICTION, "2011-04-15", "9780062041265", 325, "book28.jpg"),
+    ("The Snow Child", eowyn_ivey, GenreChoices.HISTORICAL_FICTION, "2012-02-01", "9780316175676", 389, "book29.jpg"),
+    ("The Toy Collector", james_gunn, GenreChoices.HISTORICAL_FICTION, "2001-02-13", "9781582341344", 278, "book30.jpg"),
+    ("The Tragedy Paper", elizabeth_laban, GenreChoices.HISTORICAL_FICTION, "2013-01-08", "9780375870408", 320, "book31.jpg"),
+    ("The Unlikely Pilgrimage Of Harold Fry", rachel_joyce, GenreChoices.HISTORICAL_FICTION, "2012-07-26", "9780812993295", 336, "book32.jpg"),
+    ("Wink Poppy Midnight", april_genevieve, GenreChoices.FANTASY, "2016-03-22", "9780803740488", 256, "book33.jpg"),
+    ("Wonderful World", javier_calvo, GenreChoices.HISTORICAL_FICTION, "2010-11-05", "9788481097111", 340, "book34.jpg"),
+]
+
+tmp_dir = tempfile.mkdtemp()
+ok = 0
+err = 0
+
+for title, author, genre, pub_date, isbn, pages, img_file in books_data:
+    url = BASE_URL + img_file
+    local_path = os.path.join(tmp_dir, img_file)
+    try:
+        urlretrieve(url, local_path)
+        with open(local_path, 'rb') as f:
+            book = Book(
+                title=title,
+                author=author,
+                genre=genre,
+                publication_date=pub_date,
+                isbn=isbn,
+                number_of_pages=pages,
+            )
+            book.cover_image.save(img_file, File(f), save=True)
+        ok += 1
+        print(f"OK  {title}")
+    except Exception as e:
+        err += 1
+        print(f"ERR {title}: {e}")
+        # Still create the book without the image
+        Book.objects.create(
+            title=title,
+            author=author,
+            genre=genre,
+            publication_date=pub_date,
+            isbn=isbn,
+            number_of_pages=pages,
+        )
+
+shutil.rmtree(tmp_dir, ignore_errors=True)
+print(f"\nDone! {Author.objects.count()} authors, {Book.objects.count()} books ({ok} with covers, {err} without).")
+EOF

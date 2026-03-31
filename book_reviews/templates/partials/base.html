@@ -1,1 +1,52 @@
+{% load static %}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block title %}
+  <title>Book — BookVerse</title>
+  {% endblock title %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block styles %}
+    {% endblock styles %}
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">📚</div>
+      Book<span>Verse</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{% url 'reviews:home' %}" data-page="home">Home</a></li>
+      <li><a href="{% url 'reviews:all_books' %}" data-page="books">Books</a></li>
+    </ul>
+    <div class="nav-actions" id="nav-actions"></div>
+  </nav>
+
+
+  {% if messages %}
+  <ul class="message-ul">
+    {% for message in messages %}
+      <li class="message-li {{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>  
+  {% endif %}
+
+  {% block content %}
+  {% endblock content %}
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">📚 BookVerse</div>
+    <p>© 2026 BookVerse. Celebrating stories that matter.</p>
+  </footer>
+
+  <script src="{% static 'app.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+
+</body>
+</html>

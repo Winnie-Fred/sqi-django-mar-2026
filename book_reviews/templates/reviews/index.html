@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "partials/base.html" %}
+
+{% block title %}
   <title>BookVerse — Discover, Read, Review</title>
-  <link rel="stylesheet" href="styles.css">
+{% endblock title %}
+  
+{% block styles %}
+
   <style>
     /* ── HERO ── */
     .hero {
@@ -481,20 +482,11 @@
       position: relative;
     }
   </style>
-</head>
-<body>
-  <!-- NAV -->
-  <nav class="nav">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-icon">📚</div>
-      Book<span>Verse</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html" data-page="home">Home</a></li>
-      <li><a href="books.html" data-page="books">Books</a></li>
-    </ul>
-    <div class="nav-actions" id="nav-actions"></div>
-  </nav>
+{% endblock styles %}
+
+
+{% block content %}
+
 
   <!-- HERO -->
   <section class="hero">
@@ -513,7 +505,7 @@
           Explore thousands of books, share your honest opinions, and discover your next favourite read through the voices of fellow readers.
         </p>
         <div class="hero-actions">
-          <a href="books.html" class="btn btn-primary btn-lg">
+          <a href="{% url 'reviews:all_books' %}" class="btn btn-primary btn-lg">
             Explore Books →
           </a>
           <a href="register.html" class="btn btn-outline btn-lg">
@@ -618,46 +610,4 @@
       </div>
     </div>
   </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo">📚 BookVerse</div>
-    <p>© 2026 BookVerse. Celebrating stories that matter.</p>
-  </footer>
-
-  <script src="app.js"></script>
-  <script>
-    initNav('home');
-
-    // Update stats
-    document.getElementById('books-count').textContent = getBooks().length;
-    document.getElementById('reviews-count').textContent = getReviews().length;
-    document.getElementById('users-count').textContent = getUsers().length;
-
-    // Render featured books (first 4)
-    const featured = getBooks().slice(0, 4);
-    const container = document.getElementById('featured-books');
-    container.innerHTML = featured.map(book => {
-      const avg = getAverageRating(book.id);
-      const reviews = getReviewsForBook(book.id);
-      return `
-        <div class="book-card" onclick="window.location.href='book-detail.html?id=${book.id}'">
-          <img class="book-card-cover" src="${book.cover}" alt="${book.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="book-card-cover-placeholder" style="display:none">📚</div>
-          <div class="book-card-body">
-            <div class="book-card-genre">
-              <span class="badge" data-genre="${book.genre}">${book.genre.toUpperCase()}</span>
-            </div>
-            <div class="book-card-title">${book.title}</div>
-            <div class="book-card-author">by ${book.author}</div>
-            <div class="book-card-rating">
-              ${renderStars(avg)}
-              <span>${avg > 0 ? avg.toFixed(1) : 'No ratings'}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  </script>
-</body>
-</html>
+{% endblock content %}

@@ -1,0 +1,306 @@
+{% extends "partials/base.html" %}
+
+
+{% block title %}
+  <title>All Books</title>
+{% endblock title %}
+  
+{% block styles %}
+
+<style>
+  .books-page-header {
+    margin-bottom: 2rem;
+  }
+  .books-page-header h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .books-page-header h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .results-info {
+    font-size: 0.875rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+  }
+  .sort-select {
+    width: auto;
+    min-width: 160px;
+  }
+  .no-results {
+    grid-column: 1 / -1;
+  }
+</style>
+{% endblock styles %}
+
+
+{% block content %}
+
+
+  <main class="page page-fade-in">
+    <div class="books-page-header">
+      <h1>Explore <em>Books</em></h1>
+      <p style="color:var(--text-sub)">Browse our collection — search, filter by genre, and dive into your next great read.</p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search by title or author…">
+      </div>
+      <select class="sort-select" id="sort-select">
+        <option value="default">Default</option>
+        <option value="title-az">Title A–Z</option>
+        <option value="title-za">Title Z–A</option>
+        <option value="rating-desc">Highest Rated</option>
+        <option value="year-desc">Newest First</option>
+        <option value="year-asc">Oldest First</option>
+      </select>
+    </div>
+
+    <!-- Genre Pills -->
+    <div class="genre-pills" id="genre-pills" style="margin-bottom:2rem"></div>
+
+    <div class="results-info" id="results-info"></div>
+
+    <!-- Books Grid -->
+    <div class="books-grid" id="books-grid" style="margin-top:1rem">
+      <!-- b1 · Dune · avg 4.7 (3 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b1'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=400&q=80" alt="Dune" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Sci-Fi">SCI-FI</span>
+          </div>
+          <div class="book-card-title">Dune</div>
+          <div class="book-card-author">by Frank Herbert · 1965</div>
+          <div class="book-card-rating">
+            ★★★★★
+            <span style="color:var(--text-sub)">4.7</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(3)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b2 · The Silent Patient · avg 3.5 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b2'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80" alt="The Silent Patient" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Mystery">MYSTERY</span>
+          </div>
+          <div class="book-card-title">The Silent Patient</div>
+          <div class="book-card-author">by Alex Michaelides · 2019</div>
+          <div class="book-card-rating">
+            ★★★★☆
+            <span style="color:var(--text-sub)">3.5</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b3 · The Hitchhiker's Guide to the Galaxy · avg 4.7 (3 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b3'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&q=80" alt="The Hitchhiker's Guide to the Galaxy" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Sci-Fi">SCI-FI</span>
+          </div>
+          <div class="book-card-title">The Hitchhiker's Guide to the Galaxy</div>
+          <div class="book-card-author">by Douglas Adams · 1979</div>
+          <div class="book-card-rating">
+            ★★★★★
+            <span style="color:var(--text-sub)">4.7</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(3)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b4 · It · avg 3.5 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b4'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=400&q=80" alt="It" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Horror">HORROR</span>
+          </div>
+          <div class="book-card-title">It</div>
+          <div class="book-card-author">by Stephen King · 1986</div>
+          <div class="book-card-rating">
+            ★★★★☆
+            <span style="color:var(--text-sub)">3.5</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b5 · Gone Girl · avg 4.0 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b5'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1495640452828-3df6795cf69b?w=400&q=80" alt="Gone Girl" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Thriller">THRILLER</span>
+          </div>
+          <div class="book-card-title">Gone Girl</div>
+          <div class="book-card-author">by Gillian Flynn · 2012</div>
+          <div class="book-card-rating">
+            ★★★★☆
+            <span style="color:var(--text-sub)">4.0</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b6 · The Name of the Wind · avg 5.0 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b6'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80" alt="The Name of the Wind" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Fantasy">FANTASY</span>
+          </div>
+          <div class="book-card-title">The Name of the Wind</div>
+          <div class="book-card-author">by Patrick Rothfuss · 2007</div>
+          <div class="book-card-rating">
+            ★★★★★
+            <span style="color:var(--text-sub)">5.0</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b7 · Neuromancer · avg 4.0 (1 review) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b7'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=80" alt="Neuromancer" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Sci-Fi">SCI-FI</span>
+          </div>
+          <div class="book-card-title">Neuromancer</div>
+          <div class="book-card-author">by William Gibson · 1984</div>
+          <div class="book-card-rating">
+            ★★★★☆
+            <span style="color:var(--text-sub)">4.0</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(1)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b8 · The Shining · avg 4.5 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b8'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=400&q=80" alt="The Shining" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Horror">HORROR</span>
+          </div>
+          <div class="book-card-title">The Shining</div>
+          <div class="book-card-author">by Stephen King · 1977</div>
+          <div class="book-card-rating">
+            ★★★★★
+            <span style="color:var(--text-sub)">4.5</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b9 · Project Hail Mary · avg 5.0 (3 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b9'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=400&q=80" alt="Project Hail Mary" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Sci-Fi">SCI-FI</span>
+          </div>
+          <div class="book-card-title">Project Hail Mary</div>
+          <div class="book-card-author">by Andy Weir · 2021</div>
+          <div class="book-card-rating">
+            ★★★★★
+            <span style="color:var(--text-sub)">5.0</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(3)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b10 · Normal People · avg 3.5 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b10'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1474932430478-367dbb6832c1?w=400&q=80" alt="Normal People" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Literary Fiction">LITERARY FICTION</span>
+          </div>
+          <div class="book-card-title">Normal People</div>
+          <div class="book-card-author">by Sally Rooney · 2018</div>
+          <div class="book-card-rating">
+            ★★★★☆
+            <span style="color:var(--text-sub)">3.5</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b11 · The Midnight Library · avg 3.5 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b11'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&q=80" alt="The Midnight Library" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Literary Fiction">LITERARY FICTION</span>
+          </div>
+          <div class="book-card-title">The Midnight Library</div>
+          <div class="book-card-author">by Matt Haig · 2020</div>
+          <div class="book-card-rating">
+            ★★★★☆
+            <span style="color:var(--text-sub)">3.5</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- b12 · Educated · avg 5.0 (2 reviews) -->
+      <div class="book-card" onclick="window.location.href='book-detail.html?id=b12'" style="animation: fadeInUp 0.3s ease both">
+        <img class="book-card-cover" src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&q=80" alt="Educated" loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="book-card-cover-placeholder" style="display:none">📚</div>
+        <div class="book-card-body">
+          <div class="book-card-genre">
+            <span class="badge" data-genre="Biography">BIOGRAPHY</span>
+          </div>
+          <div class="book-card-title">Educated</div>
+          <div class="book-card-author">by Tara Westover · 2018</div>
+          <div class="book-card-rating">
+            ★★★★★
+            <span style="color:var(--text-sub)">5.0</span>
+            <span style="color:var(--text-dim);font-size:0.78rem">(2)</span>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </main>
+{% endblock content %}
+
