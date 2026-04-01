@@ -1,0 +1,138 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+<title>Confirm Delete Review — BookVerse</title>
+{% endblock title %}
+
+{% block styles %}
+<style>
+  .delete-page {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .delete-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(2rem, 5vw, 3rem);
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow);
+  }
+
+  .delete-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .delete-card h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .delete-card .subtitle {
+    color: var(--text-sub);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  .review-preview {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .review-preview-book {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .review-preview-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .review-preview-body {
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .review-preview-rating {
+    color: var(--gold);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .delete-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .delete-actions .btn {
+    flex: 1;
+  }
+</style>
+{% endblock styles %}
+
+{% block content %}
+  <main class="delete-page">
+    <div class="delete-card page-fade-in">
+
+      <div class="delete-icon">🗑</div>
+
+      <h1>Delete Review</h1>
+      <p class="subtitle">
+        This action cannot be undone. Your review will be permanently removed.
+      </p>
+
+      <!-- Review preview -->
+      <div class="review-preview">
+        <div class="review-preview-book">{{ review.book.title }}</div>
+        <div class="review-preview-rating">
+          {% for i in "12345" %}
+            {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+          {% endfor %}
+        </div>
+        <div class="review-preview-body">{{ review.content }}</div>
+      </div>
+
+
+      <form method="post" action="{% url 'reviews:delete_review' review.pk %}">
+        {% csrf_token %}
+        <div class="delete-actions">
+          <a href="{% url 'reviews:book_detail' review.book.pk %}" class="btn btn-outline">Cancel</a>
+          <button type="submit" class="btn btn-danger">Delete Review</button>
+        </div>
+      </form>
+
+    </div>
+  </main>
+{% endblock content %}

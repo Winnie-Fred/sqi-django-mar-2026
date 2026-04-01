@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Local
     'reviews',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+LOGIN_REDIRECT_URL = "reviews:home"
+LOGOUT_REDIRECT_URL = "reviews:home"
+LOGIN_URL = "users:login"

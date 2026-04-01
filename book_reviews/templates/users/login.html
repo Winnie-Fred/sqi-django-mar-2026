@@ -1,0 +1,106 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+<title>Log In — BookVerse</title>
+{% endblock title %}
+
+
+{% block styles %}
+
+<style>
+  .auth-logo {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .auth-logo a {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .auth-logo span {
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .input-error {
+    font-size: 0.8rem;
+    color: var(--red);
+    margin-top: 0.25rem;
+  }
+  .form-error-box {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--red);
+    margin-bottom: 1.25rem;
+  }
+</style>
+{% endblock styles %}
+
+
+{% block content %}
+  <main class="auth-page page-fade-in">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <a href="index.html">📚 Book<span>Verse</span></a>
+      </div>
+
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to your account to continue</p>
+
+      {% if form.non_field_errors %}
+        <div class="form-error-box" id="error-box">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form id="login-form" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+
+          {% if form.errors.username %}
+            <div class="form-error-box" id="error-box">
+              {% for error in form.errors.username %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <label for="name">Username</label>
+          <input type="text" name="username" id="name" placeholder="Enter your username" required autocomplete="username" minlength="2" value="{{ form.username.value|default_if_none:'' }}">
+        </div>
+
+
+        <div class="form-group">
+          {% if form.errors.password %}
+            <div class="form-error-box" id="error-box">
+              {% for error in form.errors.password %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <label for="password">Password</label>
+          <input name="password" type="password" id="password" placeholder="Create a password" required autocomplete="new-password" minlength="6">
+          <div class="password-hint">At least 6 characters</div>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submit-btn" style="margin-top:0.5rem">
+          Log In
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="{% url 'users:signup' %}">Sign Up</a>
+      </div>
+    </div>
+  </main>
+{% endblock content %}

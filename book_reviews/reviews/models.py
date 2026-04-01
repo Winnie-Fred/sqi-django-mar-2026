@@ -1,8 +1,11 @@
+import datetime
+
 from django.db import models
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -76,10 +79,13 @@ class Review(models.Model):
             raise ValidationError("You have already reviewed this book. You can try editing your existing review.")
         super().clean()
 
+    @property
+    def can_edit_for(self):
+        can_edit_until = self.added_at + datetime.timedelta(minutes=5)
+        if can_edit_until < timezone.now():
+            return 0
+        return (can_edit_until - timezone.now()).seconds
 
-
-
-# >>> book.reviews.values_list("rating")
-# <QuerySet [(3,), (3,), (5,), (5,), (1,), (1,), (3,), (5,), (3,), (3,), (2,)]>
-# >>> sum(rating[0] for rating in book.reviews.values_list("rating"))
-# 34
+    @property
+    def can_still_edit(self):
+        return self.can_edit_for != 0

@@ -267,8 +267,8 @@
             <div class="login-prompt">
               <p>Sign in to leave a review and share your thoughts.</p>
               <div class="login-prompt-actions">
-                <a href="login.html?next=book-detail.html%3Fid%3Db2" class="btn btn-primary">Log In</a>
-                <a href="register.html" class="btn btn-outline">Sign Up</a>
+                <a href="{% url 'users:login' %}" class="btn btn-primary">Log In</a>
+                <a href="{% url 'users:signup' %}" class="btn btn-outline">Sign Up</a>
               </div>
             </div>
             {% endif %}
@@ -287,10 +287,18 @@
                   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem">
                     {% get_rating_stars review.rating %}
                   </div>
+                  <div class="review-actions">
+                      <a {% if review.added_by == request.user %}href="{% url 'reviews:edit_review' review.id %}"{% endif %} class="btn {% if review.added_by == request.user %}btn-outline{% else %}btn-ghost{% endif %}" style="font-size:0.75rem;padding:0.3rem 0.7rem">✏️ Edit</a>
+                      <a {% if review.added_by == request.user %}href="{% url 'reviews:confirm_delete' review.id %}"{% endif %} class="btn  {% if review.added_by == request.user %}btn-danger{% else %}btn-ghost{% endif %}" style="font-size:0.75rem;padding:0.3rem 0.7rem">🗑 Delete</a>
+                  </div>
                 </div>
                 <div class="review-body">{{ review.content }}</div>
                 <div class="edit-timer">
-                  ⏱ You can edit for <span>243</span>s
+                  {% if review.can_still_edit %}
+                  ⏱ You can edit for <span>{{ review.can_edit_for }}</span>s
+                  {% else %}
+                  You can no longer edit this review
+                  {% endif %}
                 </div>
               </div>
             {% endfor %}
